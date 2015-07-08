@@ -1,7 +1,17 @@
 # SplitDmy
 
-TODO: Write a gem description
+Allow splitting a date field into constituent day, month and year parts.
 
+Splitting dates into constituent parts is recommended by the GOV.UK 
+[service manual](https://www.gov.uk/service-manual/user-centred-design/resources/patterns/dates.html#memorable-dates) 
+this gem is designed to allow a simple method of displaying the split date on a view, without having 
+to manually de and re-compose the date in the controller.
+
+This gem was inspired by [TimeSplitter](https://github.com/shekibobo/time_splitter) 
+by [shekibobo](https://github.com/shekibobo), in turn based on 
+[SplitDatetime](https://github.com/michihuber/split_datetime) 
+by [Michi Huber](https://github.com/michihuber).
+ 
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -20,11 +30,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+After bundling, assuming you have a person model with a date_of_birth attribute, add this to your model:
+```ruby
+class Person < ActiveRecord::Base
+  extend SplitDmy::Accessors
+  split_dmy_accessor :date_of_birth
+end
+```
+
+In your view (if using slim):
+```ruby
+= form_for(@person) do |f|
+  = f.text_field :date_of_birth_day
+  = f.text_field :date_of_birth_month
+  = f.text_field :date_of_birth_year
+```
+
+In your controller, add the new variables to the strong parameter list
+```ruby
+    params.require(:person).permit(:name, :dob_day, :dob_month, :dob_year)
+```
+
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/split_dmy/fork )
+1. Fork it ( https://github.com/ceebeeuk/split-date-dmy/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
