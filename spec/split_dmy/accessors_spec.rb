@@ -1,7 +1,6 @@
 require 'active_support/all'
 require 'active_model'
 require 'split_dmy/accessors'
-require 'split_dmy/date_parse'
 require_relative '../../spec/support/matchers/accessors_shared'
 
 describe SplitDmy::Accessors do
@@ -55,6 +54,32 @@ describe SplitDmy::Accessors do
           model.date_of_birth_year = 10
           expect(model.date_of_birth_year).to eq 10
           expect(model.date_of_birth).to be nil
+        end
+      end
+    end
+    describe 'set the date field by calling validate_date' do
+      context 'when all are completed' do
+        before(:each) { model.date_of_birth = nil }
+
+        it 'with year last' do
+          model.date_of_birth_day = 21
+          model.date_of_birth_month = 1
+          model.date_of_birth_year = 1961
+          expect(model.date_of_birth).to eql Date.new(1961, 1, 21)
+        end
+
+        it 'with month last' do
+          model.date_of_birth_year = 1961
+          model.date_of_birth_day = 21
+          model.date_of_birth_month = 1
+          expect(model.date_of_birth).to eql Date.new(1961, 1, 21)
+        end
+
+        it 'with day last' do
+          model.date_of_birth_month = 1
+          model.date_of_birth_year = 1961
+          model.date_of_birth_day = 21
+          expect(model.date_of_birth).to eql Date.new(1961, 1, 21)
         end
       end
     end
