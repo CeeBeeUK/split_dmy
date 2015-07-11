@@ -1,6 +1,7 @@
 require 'active_support/all'
 require 'active_model'
 require 'split_dmy/accessors'
+require 'split_dmy/date_parse'
 require_relative '../../spec/support/matchers/accessors_shared'
 
 describe SplitDmy::Accessors do
