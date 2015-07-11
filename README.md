@@ -4,6 +4,7 @@
 [![Test Coverage](https://codeclimate.com/github/CeeBeeUK/split_dmy/badges/coverage.svg)](https://codeclimate.com/github/CeeBeeUK/split_dmy/coverage)
 
 [![security](https://hakiri.io/github/CeeBeeUK/split_dmy/master.svg)](https://hakiri.io/github/CeeBeeUK/split_dmy/master)
+[![Stories in Ready](https://badge.waffle.io/CeeBeeUK/split_dmy.svg?label=ready&title=Ready)](http://waffle.io/CeeBeeUK/split_dmy) 
 
 Allow splitting a date field into constituent day, month and year parts.
 
