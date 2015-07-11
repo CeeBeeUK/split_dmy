@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'active_support/all'
 require 'active_model'
 require 'split_dmy/accessors'
