@@ -1,6 +1,7 @@
 # SplitDmy
 [![Build Status](https://travis-ci.org/CeeBeeUK/split_dmy.svg)](https://travis-ci.org/CeeBeeUK/split_dmy)
 [![Code Climate](https://codeclimate.com/github/CeeBeeUK/split_dmy/badges/gpa.svg)](https://codeclimate.com/github/CeeBeeUK/split_dmy)
+[![security](https://hakiri.io/github/CeeBeeUK/split_dmy/master.svg)](https://hakiri.io/github/CeeBeeUK/split_dmy/master)
 
 Allow splitting a date field into constituent day, month and year parts.
 
