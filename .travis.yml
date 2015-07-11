@@ -2,3 +2,6 @@ language: ruby
 sudo: false
 rvm:
 - 2.2.1
+addons:
+  code_climate:
+    repo_token: 1e83d7ee8b8763f4fe70f376aba2c6857931a4373929796fa4093b2c8b3f5a93
