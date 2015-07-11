@@ -1,6 +1,9 @@
+require 'split_dmy/date_parse'
+
 module SplitDmy
   module Accessors
     def split_dmy_accessor(*fields)
+      include DateParse
 
       fields.each do |field|
         add_methods(field, 'day')
@@ -13,6 +16,7 @@ module SplitDmy
       # Writer
       define_method("#{field}_#{attr}=") do |val|
         instance_variable_set("@#{field}_#{attr}", val)
+        validate_date(field)
       end
 
       # Reader
