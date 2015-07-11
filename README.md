@@ -1,4 +1,5 @@
 # SplitDmy
+[![Build Status](https://travis-ci.org/CeeBeeUK/split_dmy.svg)](https://travis-ci.org/CeeBeeUK/split_dmy)
 
 Allow splitting a date field into constituent day, month and year parts.
 
