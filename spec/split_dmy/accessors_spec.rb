@@ -11,7 +11,7 @@ describe SplitDmy::Accessors do
   before do
     class ModelParent; include ActiveModel::Validations; end
     class Model < ModelParent; attr_accessor :date_of_birth; end
-    Model.extend(SplitDmy::Accessors)
+    Model.extend(described_class)
     Model.split_dmy_accessor(:date_of_birth)
   end
 
