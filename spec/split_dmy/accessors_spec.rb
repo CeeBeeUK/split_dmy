@@ -17,7 +17,7 @@ describe SplitDmy::Accessors do
 
   describe 'model' do
     it 'is valid' do
-      model.date_of_birth = '2015-4-11'
+      model.date_of_birth = '2010, 11, 20'
       expect(model).to be_valid
     end
 
@@ -35,6 +35,106 @@ describe SplitDmy::Accessors do
   end
 
   describe 'split dmy methods' do
+    describe '_day' do
+      describe 'when sent numbers' do
+        describe 'between 1 and 31 is valid' do
+          it 'sets the value' do
+            (1..31).each do |i|
+              model.date_of_birth_day = i
+              expect(model.date_of_birth_day).to eq i
+            end
+          end
+        end
+
+        describe 'above accepted range' do
+          it 'sets the value as nil' do
+            model.date_of_birth_day = 32
+            expect(model.date_of_birth_day).to be_nil
+          end
+        end
+
+        describe 'below accepted range' do
+          it 'sets the value as nil' do
+            model.date_of_birth_day = 0
+            expect(model.date_of_birth_day).to be_nil
+          end
+        end
+      end
+
+      describe 'when sent text' do
+        it 'returns nil' do
+          model.date_of_birth_day = 'first'
+          expect(model.date_of_birth_day).to be_nil
+        end
+      end
+
+      describe 'when sent nil' do
+        it 'returns nil' do
+          model.date_of_birth_day = nil
+          expect(model.date_of_birth_day).to be_nil
+        end
+      end
+    end
+
+    describe '_month' do
+      describe 'when sent numbers' do
+        describe 'between 1 and 31 is valid' do
+          it 'sets the value' do
+            (1..12).each do |i|
+              model.date_of_birth_month = i
+              expect(model.date_of_birth_month).to eq i
+            end
+          end
+        end
+
+        describe 'above accepted range' do
+          it 'sets the value as nil' do
+            model.date_of_birth_month = 13
+            expect(model.date_of_birth_month).to be_nil
+          end
+        end
+
+        describe 'below accepted range' do
+          it 'sets the value as nil' do
+            model.date_of_birth_month = 0
+            expect(model.date_of_birth_month).to be_nil
+          end
+        end
+      end
+
+      describe 'when sent text' do
+        describe 'that is a valid long month' do
+          I18n.t('date.month_names').each_with_index do |month, index|
+            it "sending #{month} sets the month to #{month}" do
+              model.date_of_birth_month = month
+              expect(model.date_of_birth_month).to eq index unless month.nil?
+            end
+          end
+        end
+        describe 'that is a valid short month' do
+          I18n.t('date.abbr_month_names').each_with_index do |month, index|
+            it "sending #{month} sets the month to #{month}" do
+              model.date_of_birth_month = month
+              expect(model.date_of_birth_month).to eq index unless month.nil?
+            end
+          end
+        end
+        describe 'that is not a valid month' do
+          it 'returns nil' do
+            model.date_of_birth_day = 'first'
+            expect(model.date_of_birth_day).to be_nil
+          end
+        end
+      end
+
+      describe 'when sent nil' do
+        it 'returns nil' do
+          model.date_of_birth_month = nil
+          expect(model.date_of_birth_month).to be_nil
+        end
+      end
+    end
+
     describe 'set themselves but do not set date' do
       describe '#date_of_birth_day' do
         it 'can be set and returned' do
@@ -43,6 +143,7 @@ describe SplitDmy::Accessors do
           expect(model.date_of_birth).to be nil
         end
       end
+
       describe '#date_of_birth_month' do
         it 'can be set and returned' do
           model.date_of_birth_month = 10
@@ -50,6 +151,7 @@ describe SplitDmy::Accessors do
           expect(model.date_of_birth).to be nil
         end
       end
+
       describe '#date_of_birth_year' do
         it 'can be set and returned' do
           model.date_of_birth_year = 10

@@ -15,7 +15,8 @@ module SplitDmy
     def add_methods(field, attr)
       # Writer
       define_method("#{field}_#{attr}=") do |val|
-        instance_variable_set("@#{field}_#{attr}", val)
+        return unless val.present?
+        send("valid_#{attr}?", "@#{field}_#{attr}", val)
         validate_date(field)
       end
 
