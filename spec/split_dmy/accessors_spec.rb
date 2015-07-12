@@ -135,6 +135,45 @@ describe SplitDmy::Accessors do
       end
     end
 
+    describe '_year' do
+      describe 'when sent numbers' do
+        describe 'numerically' do
+          describe 'in the acceptable range' do
+            it 'sets the value' do
+              model.date_of_birth_year = 1961
+              expect(model.date_of_birth_year).to eq 1961
+            end
+          end
+          describe 'outside the acceptable range' do
+            it 'returns nil' do
+              model.date_of_birth_year = 3334
+              expect(model.date_of_birth_year).to be_nil
+            end
+          end
+        end
+        describe 'as text' do
+          it 'accepts and converts them' do
+            model.date_of_birth_year = '1961'
+            expect(model.date_of_birth_year).to eq 1961
+          end
+        end
+      end
+
+      describe 'when sent text' do
+        it 'returns nil' do
+          model.date_of_birth_year = 'Nineteen Sixty One'
+          expect(model.date_of_birth_year).to be_nil
+        end
+      end
+
+      describe 'when sent nil' do
+        it 'returns nil' do
+          model.date_of_birth_year = nil
+          expect(model.date_of_birth_year).to be_nil
+        end
+      end
+    end
+
     describe 'set themselves but do not set date' do
       describe '#date_of_birth_day' do
         it 'can be set and returned' do

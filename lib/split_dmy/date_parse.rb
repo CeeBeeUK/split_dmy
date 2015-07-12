@@ -13,7 +13,7 @@ module SplitDmy
 
     def valid_day?(iv, d)
       valid = valid_fixnum?(d, 31) || valid_numeric_string?(d, 31)
-      instance_variable_set(iv, d) if valid
+      instance_variable_set(iv, d.to_i) if valid
     end
 
     def valid_month?(iv, month)
@@ -21,13 +21,13 @@ module SplitDmy
         instance_variable_set(iv, month)
       else
         valid = valid_month_name?(month)
-        instance_variable_set(iv, valid) if valid
+        instance_variable_set(iv, valid.to_i) if valid
       end
     end
 
     def valid_year?(iv, year)
       valid = valid_fixnum?(year, 3333) || valid_numeric_string_year?(year)
-      instance_variable_set(iv, year) if valid
+      instance_variable_set(iv, year.to_i) if valid
     end
 
     def valid_fixnum?(x, max)
@@ -36,6 +36,10 @@ module SplitDmy
 
     def valid_numeric_string?(x, max)
       x =~ /^[0-9]{1,2}$/ && x.to_i <= max
+    end
+
+    def valid_numeric_string_year?(x)
+      x =~ /^[0-9]{4}$/ && x.to_i <= 3333
     end
 
     def valid_month_name?(month)
