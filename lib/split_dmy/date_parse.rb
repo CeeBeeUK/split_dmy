@@ -15,7 +15,6 @@ module SplitDmy
       instance_variable_set(iv, value.to_i)
     end
 
-
     def valid_day?(iv, day)
       valid = valid_fixnum?(day, 31) || valid_numeric_string?(day, 31)
       set_instance_variable(iv, day) if valid
