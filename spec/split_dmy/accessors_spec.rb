@@ -17,7 +17,6 @@ describe SplitDmy::Accessors do
 
   describe 'model' do
     it 'is valid' do
-      model.date_of_birth = '2010, 11, 20'
       expect(model).to be_valid
     end
 
@@ -35,6 +34,18 @@ describe SplitDmy::Accessors do
   end
 
   describe 'split dmy methods' do
+    describe 'handles pre-set dates' do
+      describe 'passes them to the new accessors' do
+
+        before(:each) { model.date_of_birth = '1991-1-21' }
+
+        it 'sets the _day' do
+          expect(model.date_of_birth_day).to eq 21
+        end
+
+      end
+    end
+
     describe '_day' do
       describe 'when sent numbers' do
         describe 'between 1 and 31 is valid' do

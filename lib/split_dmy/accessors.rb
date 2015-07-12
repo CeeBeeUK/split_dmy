@@ -5,7 +5,13 @@ module SplitDmy
     def split_dmy_accessor(*fields)
       include DateParse
 
+      options = fields.extract_options!
       fields.each do |field|
+
+        define_method("#{field}_or_new") do
+          self.send(field) || options.fetch(:default, ->{ Date.new(0, 1, 1) }).call
+        end
+
         add_methods(field, 'day')
         add_methods(field, 'month')
         add_methods(field, 'year')
