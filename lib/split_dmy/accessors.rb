@@ -19,16 +19,23 @@ module SplitDmy
         add_methods(field, 'year')
       end
     end
-    # rubocop:enable Metrics/MethodLength, AbcSize
+    # rubocop:enable Metrics/MethodLength, NonLocalExitFromIterator
 
     def add_methods(field, attr)
+      add_writer(field, attr)
+      add_reader(field, attr)
+    end
+
+    def add_writer(field, attr)
       # Writer
       define_method("#{field}_#{attr}=") do |val|
         return unless val.present?
         send("valid_#{attr}?", "@#{field}_#{attr}", val)
         validate_date(field)
       end
+    end
 
+    def add_reader(field, attr)
       # Reader
       define_method("#{field}_#{attr}") do
         val = instance_variable_get("@#{field}_#{attr}")
