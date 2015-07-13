@@ -42,7 +42,32 @@ describe SplitDmy::Accessors do
         it 'sets the _day' do
           expect(model.date_of_birth_day).to eq 21
         end
+      end
+      describe 'allows clearing of preset data' do
 
+        before(:each) { model.date_of_birth = '1991-1-21' }
+
+        it 'by setting all values to nil' do
+          model.date_of_birth_day = nil
+          model.date_of_birth_month = nil
+          model.date_of_birth_year = nil
+          expect(model.date_of_birth).to be_nil
+        end
+
+        describe 'by setting' do
+          it 'day to nil' do
+            model.date_of_birth_day = nil
+            expect(model.date_of_birth).to be_nil
+          end
+          it 'month to nil' do
+            model.date_of_birth_month = nil
+            expect(model.date_of_birth).to be_nil
+          end
+          it 'year to nil' do
+            model.date_of_birth_year = nil
+            expect(model.date_of_birth).to be_nil
+          end
+        end
       end
     end
 
