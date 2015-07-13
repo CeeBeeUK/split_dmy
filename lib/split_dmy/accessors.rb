@@ -2,16 +2,18 @@ require 'split_dmy/date_parse'
 
 module SplitDmy
   module Accessors
-    # rubocop:disable Metrics/MethodLength, NonLocalExitFromIterator
+    # rubocop:disable Metrics/MethodLength
     def split_dmy_accessor(*fields)
       include DateParse
 
       fields.each do |field|
         define_method("#{field}=") do |date|
-          return unless date.present?
-          date = Date.parse(date.to_s) unless date.is_a?(Date)
-          send("populate_partials", field, date)
-          instance_variable_set("@#{field}", date)
+          parsed_date = nil
+          if date.present?
+            parsed_date = date.is_a?(Date) ? date : Date.parse(date.to_s)
+            send("populate_partials", field, parsed_date)
+          end
+          instance_variable_set("@#{field}", parsed_date)
         end
 
         add_methods(field, 'day')
@@ -19,7 +21,7 @@ module SplitDmy
         add_methods(field, 'year')
       end
     end
-    # rubocop:enable Metrics/MethodLength, NonLocalExitFromIterator
+    # rubocop:enable Metrics/MethodLength
 
     def add_methods(field, attr)
       add_writer(field, attr)
@@ -29,8 +31,8 @@ module SplitDmy
     def add_writer(field, attr)
       # Writer
       define_method("#{field}_#{attr}=") do |val|
-        return unless val.present?
-        send("valid_#{attr}?", "@#{field}_#{attr}", val)
+        new_val = val.present? ? val : nil
+        send("valid_#{attr}?", "@#{field}_#{attr}", new_val)
         validate_date(field)
       end
     end
