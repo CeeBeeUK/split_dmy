@@ -2,7 +2,7 @@ require 'split_dmy/date_parse'
 
 module SplitDmy
   module Accessors
-    # rubocop:disable Metrics/MethodLength, AbcSize, NonLocalExitFromIterator
+    # rubocop:disable Metrics/MethodLength, NonLocalExitFromIterator
     def split_dmy_accessor(*fields)
       include DateParse
 
@@ -10,9 +10,7 @@ module SplitDmy
         define_method("#{field}=") do |date|
           return unless date.present?
           date = Date.parse(date.to_s) unless date.is_a?(Date)
-          send("valid_day?", "@#{field}_day", date.day)
-          send("valid_month?", "@#{field}_month", date.month)
-          send("valid_year?", "@#{field}_year", date.year)
+          send("populate_partials", field, date)
           instance_variable_set("@#{field}", date)
         end
 
@@ -33,7 +31,9 @@ module SplitDmy
 
       # Reader
       define_method("#{field}_#{attr}") do
-        instance_variable_get("@#{field}_#{attr}")
+        val = instance_variable_get("@#{field}_#{attr}")
+        val = send(field).try "#{attr}".to_sym unless val.present?
+        val
       end
     end
   end

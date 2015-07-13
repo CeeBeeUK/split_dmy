@@ -15,6 +15,12 @@ module SplitDmy
       instance_variable_set(iv, value.to_i)
     end
 
+    def populate_partials(field, date)
+      valid_day?("@#{field}_day", date.day)
+      valid_month?("@#{field}_month", date.month)
+      valid_year?("@#{field}_year", date.year)
+    end
+
     def valid_day?(iv, day)
       valid = valid_fixnum?(day, 31) || valid_numeric_string?(day, 31)
       set_instance_variable(iv, day) if valid
