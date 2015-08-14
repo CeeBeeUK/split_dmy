@@ -27,7 +27,8 @@ module SplitDmy
     end
 
     def combine_partials_error
-      "'#{[@split_day, @split_month, @split_year].join('-')}' is not a valid date"
+      joined_date = [@split_day, @split_month, @split_year].join('-')
+      "'#{joined_date}' is not a valid date"
     end
 
     def get_partial_error(part)

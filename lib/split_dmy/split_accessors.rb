@@ -15,6 +15,7 @@ module SplitDmy
 
     private
 
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def extend_validation(attr)
       define_method("validate_#{attr}_partials") do
         dv = DateValidator.new(self, attr)
