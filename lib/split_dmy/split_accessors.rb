@@ -19,7 +19,8 @@ module SplitDmy
     def extend_validation(attr)
       define_method("validate_#{attr}_partials") do
         dv = DateValidator.new(self, attr)
-        new_errs, field_errors = [], []
+        new_errs = []
+        field_errors = []
         new_errs << 'you need to provide a valid date' if dv.all_partials_empty?
         new_errs << dv.combine_partials_error if dv.partials_valid_date_fails?
 
