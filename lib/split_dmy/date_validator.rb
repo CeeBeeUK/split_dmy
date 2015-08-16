@@ -60,8 +60,6 @@ module SplitDmy
 
     def partials_valid?
       { d: valid_day?, m: valid_month?, y: valid_year? }.values.all?
-    rescue
-      false
     end
 
     private

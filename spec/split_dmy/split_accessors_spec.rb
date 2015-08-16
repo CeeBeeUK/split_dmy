@@ -271,6 +271,20 @@ describe SplitDmy::SplitAccessors do
         end
       end
 
+      describe 'when passed implausible dates' do
+        before do
+          model.date_of_birth_day = 30
+          model.date_of_birth_month = 2
+          model.date_of_birth_year = 2015
+          model.valid?
+        end
+
+        it 'returns an error' do
+          err_msg = ["is not valid, '30-2-2015' is not a valid date"]
+          expect(model.errors[:date_of_birth]).to eq err_msg
+        end
+      end
+
       describe 'set themselves but do not set date' do
         describe '#posted_day' do
           it 'can be set and returned' do
