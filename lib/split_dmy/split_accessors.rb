@@ -18,7 +18,6 @@ module SplitDmy
     def extend_validation(attr)
       define_method("validate_#{attr}_partials") do
         dv = DateValidator.new(self, attr)
-        dv.generate_partial_errors
         new_errs = dv.generate_errors
         unless new_errs.empty?
           errors.delete(attr.to_sym)

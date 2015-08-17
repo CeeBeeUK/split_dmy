@@ -1,17 +1,16 @@
 module SplitDmy
-  class DateValidator # rubocop:disable ClassLength
+  class DateValidator
     def initialize(object, attribute)
       @split_day = object.instance_variable_get("@#{attribute}_day")
       @split_month = object.instance_variable_get("@#{attribute}_month")
-      @split_year = object.instance_variable_get("@#{attribute}_year")
+      @split_year = object.instance_variable_get("@#{attribute}_year").to_i
       @object = object
       @attr = attribute
     end
 
     def partial_updated
-      pv = partials_valid?
       bd = build_date
-      pv && bd ? bd : nil
+      partials_valid? && bd ? bd : nil
     end
 
     def parse_month(val)
@@ -21,7 +20,7 @@ module SplitDmy
         mon_name = valid_month_name?(val)
         result = mon_name.present? ? mon_name : val
       end
-      result
+      result.to_i
     end
 
     def get_partial_error(part)
@@ -33,7 +32,7 @@ module SplitDmy
     def build_date
       date = Date.new(
         @split_year.to_i,
-        parse_month(@split_month).to_i,
+        parse_month(@split_month),
         @split_day.to_i
       )
       date if partials_match_date(date)
@@ -42,17 +41,15 @@ module SplitDmy
     end
 
     def generate_errors
-      err = []
-      err << 'you need to provide a valid date' if all_partials_empty?
-      err << combine_partials_error if partials_valid_date_fails?
-      err
-    end
-
-    def generate_partial_errors
       %w[day month year].each do |part|
         error = get_partial_error(part)
         @object.errors.add("#{@attr}_#{part}".to_sym, error) if error.present?
       end
+
+      err = []
+      err << 'you need to provide a valid date' if all_partials_empty?
+      err << combine_partials_error if partials_valid_date_fails?
+      err
     end
 
     private
@@ -71,11 +68,7 @@ module SplitDmy
     end
 
     def all_partials_empty?
-      [
-        @split_day.empty?,
-        @split_month.empty?,
-        @split_year.empty?
-      ].values.all?
+      [@split_day.empty?, @split_month.empty?, @split_year.empty?].values.all?
     rescue
       false
     end
