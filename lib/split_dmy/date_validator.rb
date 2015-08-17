@@ -1,9 +1,11 @@
 module SplitDmy
-  class DateValidator
+  class DateValidator # rubocop:disable ClassLength
     def initialize(object, attribute)
       @split_day = object.instance_variable_get("@#{attribute}_day")
       @split_month = object.instance_variable_get("@#{attribute}_month")
       @split_year = object.instance_variable_get("@#{attribute}_year")
+      @object = object
+      @attr = attribute
     end
 
     def partial_updated
@@ -20,15 +22,6 @@ module SplitDmy
         result = mon_name.present? ? mon_name : val
       end
       result
-    end
-
-    def partials_valid_date_fails?
-      partials_valid? && !build_date
-    end
-
-    def combine_partials_error
-      joined_date = [@split_day, @split_month, @split_year].join('-')
-      "'#{joined_date}' is not a valid date"
     end
 
     def get_partial_error(part)
@@ -48,11 +41,33 @@ module SplitDmy
       false
     end
 
-    def validate_partials
+    def generate_errors
       err = []
       err << 'you need to provide a valid date' if all_partials_empty?
       err << combine_partials_error if partials_valid_date_fails?
       err
+    end
+
+    def generate_partial_errors
+      %w[day month year].each do |part|
+        error = get_partial_error(part)
+        @object.errors.add("#{@attr}_#{part}".to_sym, error) if error.present?
+      end
+    end
+
+    private
+
+    def partials_valid?
+      { d: valid_day?, m: valid_month?, y: valid_year? }.values.all?
+    end
+
+    def partials_valid_date_fails?
+      partials_valid? && !build_date
+    end
+
+    def combine_partials_error
+      joined_date = [@split_day, @split_month, @split_year].join('-')
+      "'#{joined_date}' is not a valid date"
     end
 
     def all_partials_empty?
@@ -64,12 +79,6 @@ module SplitDmy
     rescue
       false
     end
-
-    def partials_valid?
-      { d: valid_day?, m: valid_month?, y: valid_year? }.values.all?
-    end
-
-    private
 
     def partials_match_date(date)
       date.day == @split_day.to_i &&
