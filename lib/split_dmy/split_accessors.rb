@@ -15,23 +15,15 @@ module SplitDmy
 
     private
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
     def extend_validation(attr)
       define_method("validate_#{attr}_partials") do
         dv = DateValidator.new(self, attr)
-        new_errs = []
-        field_errors = []
-        new_errs << 'you need to provide a valid date' if dv.all_partials_empty?
-        new_errs << dv.combine_partials_error if dv.partials_valid_date_fails?
-
+        new_errs = dv.validate_partials
         %w[day month year].each do |part|
           error = dv.get_partial_error(part)
-          if error.present?
-            field_errors << error
-            errors.add("#{attr}_#{part}".to_sym, error)
-          end
+          errors.add("#{attr}_#{part}".to_sym, error) if error.present?
         end
-        new_errs << make_sentence_of(field_errors) unless field_errors.empty?
         unless new_errs.empty?
           errors.delete(attr.to_sym)
           errors.add(attr.to_sym, "is not valid, #{make_sentence_of(new_errs)}")

@@ -48,6 +48,13 @@ module SplitDmy
       false
     end
 
+    def validate_partials
+      err = []
+      err << 'you need to provide a valid date' if all_partials_empty?
+      err << combine_partials_error if partials_valid_date_fails?
+      err
+    end
+
     def all_partials_empty?
       [
         @split_day.empty?,
