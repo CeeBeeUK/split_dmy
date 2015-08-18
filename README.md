@@ -5,6 +5,7 @@
 
 [![security](https://hakiri.io/github/CeeBeeUK/split_dmy/master.svg)](https://hakiri.io/github/CeeBeeUK/split_dmy/master)
 [![Stories in Ready](https://badge.waffle.io/CeeBeeUK/split_dmy.svg?label=ready&title=Ready)](http://waffle.io/CeeBeeUK/split_dmy) 
+[![Gem Version](https://badge.fury.io/rb/split_dmy.svg)](http://badge.fury.io/rb/split_dmy)
 
 Allow splitting a date field into constituent day, month and year parts.
 
