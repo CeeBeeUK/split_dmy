@@ -8,11 +8,11 @@ Gem::Specification.new do |spec|
   spec.version       = SplitDmy::VERSION
   spec.authors       = ['Colin Bruce']
   spec.email         = ['colinbruce@gmail.com']
-  spec.summary       = 'Add split accessors for date fields /
-                        into day, month, year parts'
+  spec.summary       = 'Add split accessors for date fields into day, month, year parts'
   spec.description   = <<-EOF
-    Use `split_dmy_accessor :date_of_birth`to provide `date_of_birth_day`,
-    `date_of_birth_month`, `date_of_birth_year` accessors on the model.'
+  Adds accessors to a class so that the date can be set as a string while days, months and years can be set as integers. 
+  It also allows for month as short and long text inputs, e.g. Jan, March.  It will validate resulting dates and generate 
+  errors when parts are invalid and where combined parts are incorrect.
   EOF
   spec.homepage      = 'https://github.com/CeeBeeUK/split_dmy'
   spec.license       = 'MIT'
