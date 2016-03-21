@@ -16,7 +16,8 @@ AllCops:
     - 'script/cucumber'
     - 'lib/log_stuff.rb'
 
-  RunRailsCops: true
+Rails:
+  Enabled: true
 
 # Allow long lines in specs, as it's almost impossible to fit RSpec's
 # expectations into 80 characters.
