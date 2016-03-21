@@ -21,7 +21,7 @@ module SplitDmy
         new_errs = dv.generate_errors
         unless new_errs.empty?
           errors.delete(attr.to_sym)
-          errors.add(attr.to_sym, "is not valid, #{make_sentence_of(new_errs)}")
+          errors.add(attr.to_sym, :invalid)
         end
       end
     end

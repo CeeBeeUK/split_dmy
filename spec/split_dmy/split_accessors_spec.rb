@@ -280,8 +280,7 @@ describe SplitDmy::SplitAccessors do
         end
 
         it 'returns an error' do
-          err_msg = ["is not valid, '30-2-2015' is not a valid date"]
-          expect(model.errors[:date_of_birth]).to eq err_msg
+          expect(model.errors[:date_of_birth]).to eq ['is invalid']
         end
       end
 
