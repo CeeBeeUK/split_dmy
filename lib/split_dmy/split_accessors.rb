@@ -28,7 +28,7 @@ module SplitDmy
 
     def override_builtin(attr)
       after_initialize do
-        full_date = send("#{attr}")
+        full_date = send(attr.to_s)
         split_into_parts(attr, full_date) unless full_date.nil?
       end
 
