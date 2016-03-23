@@ -48,12 +48,6 @@ module SplitDmy
       partials_valid? && !build_date
     end
 
-    def all_partials_empty?
-      [@split_day.empty?, @split_month.empty?, @split_year.empty?].values.all?
-    rescue
-      false
-    end
-
     def partials_match_date(date)
       date.day == @split_day.to_i &&
         date.month == parse_month(@split_month).to_i &&
