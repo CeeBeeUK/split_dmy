@@ -7,6 +7,8 @@ describe SplitDmy::SplitAccessors do
   let(:model) do
     User.extend(described_class)
     User.split_dmy_accessor(:date_of_birth)
+    User.validate :validate_date_of_birth_partials
+
     User.new(date_of_birth: date_of_birth)
   end
 

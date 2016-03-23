@@ -4,8 +4,6 @@ module SplitDmy
       require 'split_dmy/date_validator'
 
       attrs.each do |attr|
-        validate "validate_#{attr}_partials".to_sym
-
         override_builtin(attr)
         add_attr_accessors(attr)
         extend_validation(attr)
@@ -18,7 +16,7 @@ module SplitDmy
     def extend_validation(attr)
       define_method("validate_#{attr}_partials") do
         dv = DateValidator.new(self, attr)
-        if dv.any_errors?
+        if attr.present? && dv.any_errors?
           errors.delete(attr.to_sym)
           errors.add(attr.to_sym, :invalid)
         end
