@@ -9,8 +9,8 @@ module SplitDmy
     end
 
     def partial_updated
-      bd = build_date
-      partials_valid? && bd ? bd : nil
+      new_date = build_date
+      partials_valid? && new_date ? new_date : nil
     end
 
     def parse_month(val)
@@ -40,16 +40,8 @@ module SplitDmy
       false
     end
 
-    def generate_errors
-      %w[day month year].each do |part|
-        error = get_partial_error(part)
-        @object.errors.add("#{@attr}_#{part}".to_sym, error) if error.present?
-      end
-
-      err = []
-      err << 'you need to provide a valid date' if all_partials_empty?
-      err << combine_partials_error if partials_valid_date_fails?
-      err
+    def any_errors?
+      !partials_valid? || partials_valid_date_fails?
     end
 
     private
@@ -60,11 +52,6 @@ module SplitDmy
 
     def partials_valid_date_fails?
       partials_valid? && !build_date
-    end
-
-    def combine_partials_error
-      joined_date = [@split_day, @split_month, @split_year].join('-')
-      "'#{joined_date}' is not a valid date"
     end
 
     def all_partials_empty?

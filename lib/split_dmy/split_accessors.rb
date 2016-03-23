@@ -18,8 +18,7 @@ module SplitDmy
     def extend_validation(attr)
       define_method("validate_#{attr}_partials") do
         dv = DateValidator.new(self, attr)
-        new_errs = dv.generate_errors
-        unless new_errs.empty?
+        if dv.any_errors?
           errors.delete(attr.to_sym)
           errors.add(attr.to_sym, :invalid)
         end
@@ -43,10 +42,6 @@ module SplitDmy
         instance_variable_set("@#{attr}_day", full_date.day)
         instance_variable_set("@#{attr}_month", full_date.month)
         instance_variable_set("@#{attr}_year", full_date.year)
-      end
-
-      define_method('make_sentence_of') do |errors|
-        errors.to_sentence(last_word_connector: ' and ')
       end
     end
 
