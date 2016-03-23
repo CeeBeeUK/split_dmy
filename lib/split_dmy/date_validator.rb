@@ -23,12 +23,6 @@ module SplitDmy
       result.to_i
     end
 
-    def get_partial_error(part)
-      error = "#{part} must be completed" if "@split_#{part}".to_s.empty?
-      error = "is not a valid #{part}" unless send("valid_#{part}?")
-      error
-    end
-
     def build_date
       date = Date.new(
         @split_year.to_i,
