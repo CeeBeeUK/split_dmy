@@ -1,5 +1,7 @@
 module SplitDmy
   module SplitAccessors
+    PARTS = %w[day month year].freeze
+
     def split_dmy_accessor(*attrs)
       require 'split_dmy/date_validator'
 
@@ -16,8 +18,7 @@ module SplitDmy
     private
 
     def override_permitted_attributes(attrs)
-      parts = %w['day', 'month', 'year']
-      array = attrs.product(parts).map { |attr, part| "#{attr}_#{part}".to_sym }
+      array = attrs.product(PARTS).map { |attr, part| "#{attr}_#{part}".to_sym }
 
       define_method(:permitted_attributes) do
         super().push(array)
@@ -55,13 +56,13 @@ module SplitDmy
     end
 
     def add_virtus_attributes(attr)
-      %w[day month year].each do |part|
+      PARTS.each do |part|
         attribute "#{attr}_#{part}", String
       end
     end
 
     def add_attr_accessors(attr)
-      %w[day month year].each do |part|
+      PARTS.each do |part|
         define_method("#{attr}_#{part}=") do |val|
           instance_variable_set("@#{attr}_#{part}", val)
           new = DateValidator.new(self, attr).partial_updated
