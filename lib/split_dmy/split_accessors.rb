@@ -6,12 +6,23 @@ module SplitDmy
       attrs.each do |attr|
         override_builtin(attr)
         add_attr_accessors(attr)
+        add_virtus_attributes(attr)
         extend_validation(attr)
       end
       add_methods
+      override_permitted_attributes(attrs)
     end
 
     private
+
+    def override_permitted_attributes(attrs)
+      parts = %w['day', 'month', 'year']
+      array = attrs.product(parts).map { |attr, part| "#{attr}_#{part}".to_sym }
+
+      define_method(:permitted_attributes) do
+        super().push(array)
+      end
+    end
 
     def extend_validation(attr)
       define_method("validate_#{attr}_partials") do
@@ -40,6 +51,12 @@ module SplitDmy
         instance_variable_set("@#{attr}_day", full_date.day)
         instance_variable_set("@#{attr}_month", full_date.month)
         instance_variable_set("@#{attr}_year", full_date.year)
+      end
+    end
+
+    def add_virtus_attributes(attr)
+      %w[day month year].each do |part|
+        attribute "#{attr}_#{part}", String
       end
     end
 
